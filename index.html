@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnchantAI</title>
+    <style>
+        body {
+            font-family: 'Minecraft', sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents scrollbar due to particle effects */
+        }
+        h1 {
+            font-size: 3rem;
+            margin-top: 20px;
+        }
+        img {
+            width: 100px; /* Adjust image size as needed */
+            margin: 20px;
+        }
+        #output {
+            border: 2px solid #fff;
+            padding: 10px;
+            margin: 20px;
+            background-color: #333;
+            color: #0f0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0c0;
+        }
+        /* Styles for experience particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.8); /* Gold color for particles */
+            pointer-events: none;
+            animation: float 1s ease-in-out forwards;
+        }
+        @keyframes float {
+            to {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSq9D2xPWdy4t8zIh4my6r5mlNt1oslkGIUw&s" alt="EnchantAI Icon" class="icon">
+        <h1>EnchantAI</h1>
+    </div>
+    <div>
+        <img src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png?24296" alt="Diamond Sword" id="diamondSword"> <!-- Diamond Sword image -->
+        <img src="https://minecraft.wiki/images/Diamond_Pickaxe_JE3_BE3.png?7409" alt="Diamond Pickaxe" id="diamondPickaxe"> <!-- Diamond Pickaxe image -->
+    </div>
+    <div>
+        <button onclick="enchantItem('sword')">Enchant Sword</button>
+        <button onclick="enchantItem('pickaxe')">Enchant Pickaxe</button>
+    </div>
+    <div id="output"></div>
+
+    <audio id="enchantSound" src="orb.mp3"></audio>
+    <audio id="xpSound" src="orb.mp3"></audio>
+    
+
+    <script>
+        const enchantments = [
+            'Sharpness I',
+            'Sharpness II',
+            'Sharpness III',
+            'Fire Aspect I',
+            'Fire Aspect II',
+            'Efficiency I',
+            'Efficiency II',
+            'Efficiency III',
+            'Fortune I',
+            'Fortune II',
+            'Fortune III',
+            'Unbreaking I',
+            'Unbreaking II',
+            'Unbreaking III',
+            'Silk Touch',
+            'Looting I',
+            'Looting II',
+            'Looting III'
+        ];
+
+        function enchantItem(itemType) {
+            const randomIndex = Math.floor(Math.random() * enchantments.length);
+            const selectedEnchantment = enchantments[randomIndex];
+            const itemName = itemType === 'sword' ? 'Diamond Sword' : 'Diamond Pickaxe';
+            document.getElementById('output').innerText = `${itemName} enchanted with: ${selectedEnchantment}`;
+
+            // Play sound for enchanting
+            const enchantSound = document.getElementById('enchantSound');
+            enchantSound.currentTime = 0; // Reset sound to start
+            enchantSound.play().catch(error => console.error("Audio playback failed:", error));
+
+            // Play sound for experience
+            const xpSound = document.getElementById('xpSound');
+            xpSound.currentTime = 0; // Reset sound to start
+            xpSound.play().catch(error => console.error("Audio playback failed:", error));
+
+            // Create experience particles
+            createParticles();
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 20; i++) { // Number of particles
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.width = Math.random() * 10 + 'px'; // Random size
+                particle.style.height = particle.style.width; // Make it a circle
+                particle.style.left = Math.random() * window.innerWidth + 'px'; // Random horizontal position
+                document.body.appendChild(particle);
+
+                // Remove particle after animation
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000); // Duration matches the animation time
+            }
+        }
+    </script>
+</body>
+</html>
